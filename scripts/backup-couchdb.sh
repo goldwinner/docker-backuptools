@@ -7,7 +7,7 @@ export COUCHDB_PASS=$3
 export COUCHDB_PORT=5984
 export COUCH_URL=http://${COUCHDB_USER}:${COUCHDB_PASS}@${COUCHDB_HOST}:${COUCHDB_PORT}
 export COUCHDB_BAK_PATH=/src/databackup/couchdb/
-export COUCHDB_BAK_NAME=${COUCHDB_HOST}-$(date +%F)
+export COUCHDB_BAK_NAME=${COUCHDB_HOST}-$(date "+%Y%m%d-%H%M%S")
 
 ###Conditional judgment###
 if [ ! -d ${COUCHDB_BAK_PATH} ];then
@@ -39,7 +39,7 @@ do
   couchbackup --db ${DB} --log ${DB}.log | gzip > ${COUCHDB_HOST}-${DB}.json.gz
 done
 tar cf ${COUCHDB_BAK_NAME}.tar *.json.gz --remove-files
+tar cf ${COUCHDB_BAK_NAME}-log.tar *.log --remove-files
 ####Delete more than 30 days backup files###
 cd ${COUCHDB_BAK_PATH}
 find . -type f -name "*.tar" -mtime +30 | xargs rm -f
-find . -type f -name "*.log" -mtime +30 | xargs rm -f
