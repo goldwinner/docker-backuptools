@@ -1,0 +1,14 @@
+version: "2"
+services:
+  couchdb-backup:
+    image: "node:8"
+    container_name: couchdb-backup
+    user: "node"
+    working_dir: /src
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/src
+    expose:
+      - "18101"
+    command: "npm start"
